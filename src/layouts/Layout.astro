@@ -4,7 +4,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 import ConfigCarrier from "@components/ConfigCarrier.astro";
-import { profileConfig, siteConfig } from "@/config";
+import { commentConfig, profileConfig, siteConfig } from "@/config";
 import {
 	AUTO_MODE,
 	BANNER_HEIGHT,
@@ -156,6 +156,66 @@ const bannerOffset =
 
 		<!-- increase the page height during page transition to prevent the scrolling animation from jumping -->
 		<div id="page-height-extend" class="hidden h-[300vh]"></div>
+
+		<!-- giscus 评论加载器：swup 切换页面后不会重新执行页面内脚本，
+		     所以放在全局布局里初始化一次，并监听 astro:page-load 重新挂载。 -->
+		<script define:vars={{ commentConfig }}>
+			(() => {
+				if (document.documentElement.dataset.giscusInit) return
+				document.documentElement.dataset.giscusInit = '1'
+
+				const config = commentConfig
+
+				function currentTheme() {
+					return document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+				}
+
+				function syncTheme() {
+					const iframe = document.querySelector('iframe.giscus-frame')
+					if (!iframe || !iframe.contentWindow) return
+					iframe.contentWindow.postMessage(
+						{ giscus: { setConfig: { theme: currentTheme() } } },
+						'https://giscus.app',
+					)
+				}
+
+				function load() {
+					if (!config.enable) return
+					const container = document.querySelector('.giscus')
+					if (!container) return
+					// 同一路径不重复挂载（锚点跳转等也会触发 page-load）
+					if (container.dataset.path === location.pathname) return
+					container.dataset.path = location.pathname
+					container.innerHTML = ''
+
+					const script = document.createElement('script')
+					script.src = 'https://giscus.app/client.js'
+					script.async = true
+					script.crossOrigin = 'anonymous'
+					script.dataset.repo = config.repo
+					script.dataset.repoId = config.repoId
+					script.dataset.category = config.category
+					script.dataset.categoryId = config.categoryId
+					script.dataset.mapping = config.mapping
+					script.dataset.strict = config.strict
+					script.dataset.reactionsEnabled = config.reactionsEnabled
+					script.dataset.emitMetadata = '0'
+					script.dataset.inputPosition = config.inputPosition
+					script.dataset.theme = currentTheme()
+					script.dataset.lang = config.lang
+					container.appendChild(script)
+				}
+
+				load()
+				document.addEventListener('astro:page-load', load)
+
+				// 站点手动切换深浅色时，同步更新评论区的配色
+				new MutationObserver(syncTheme).observe(document.documentElement, {
+					attributes: true,
+					attributeFilter: ['class'],
+				})
+			})()
+		</script>
 	</body>
 </html>
 

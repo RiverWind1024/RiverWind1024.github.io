@@ -1,4 +1,5 @@
 import type {
+	CommentConfig,
 	ExpressiveCodeConfig,
 	LicenseConfig,
 	NavBarConfig,
@@ -80,4 +81,20 @@ export const expressiveCodeConfig: ExpressiveCodeConfig = {
 	// Note: Some styles (such as background color) are being overridden, see the astro.config.mjs file.
 	// Please select a dark theme, as this blog theme currently only supports dark background color
 	theme: "github-dark",
+};
+
+// giscus 评论：数据存放在本仓库的 GitHub Discussions 中。
+// 修改仓库或分类后，需要同步更新 repoId / categoryId
+// （可以用 `gh api repos/<owner>/<repo> --jq .node_id` 和 GitHub GraphQL 查询）。
+export const commentConfig: CommentConfig = {
+	enable: true,
+	repo: "RiverWind1024/RiverWind1024.github.io",
+	repoId: "R_kgDOVxW9jw",
+	category: "Announcements",
+	categoryId: "DIC_kwDOVxW9j84DLUa3",
+	mapping: "pathname",
+	strict: "0",
+	reactionsEnabled: "1",
+	inputPosition: "top",
+	lang: "zh-CN",
 };

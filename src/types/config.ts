@@ -100,3 +100,16 @@ export type BlogPostData = {
 export type ExpressiveCodeConfig = {
 	theme: string;
 };
+
+export type CommentConfig = {
+	enable: boolean;
+	repo: string;
+	repoId: string;
+	category: string;
+	categoryId: string;
+	mapping: string;
+	strict: string;
+	reactionsEnabled: string;
+	inputPosition: string;
+	lang: string;
+};

@@ -1,0 +1,16 @@
+---
+import I18nKey from "@i18n/i18nKey";
+import { i18n } from "@i18n/translation";
+import { commentConfig } from "@/config";
+---
+
+{
+	commentConfig.enable && (
+		<div class="card-base px-6 py-4 mt-6 onload-animation">
+			<div class="text-lg font-bold mb-4 text-black/90 dark:text-white/90">
+				{i18n(I18nKey.comments)}
+			</div>
+			<div class="giscus"></div>
+		</div>
+	)
+}
