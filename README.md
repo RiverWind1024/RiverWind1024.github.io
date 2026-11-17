@@ -1,3 +1,7 @@
+> **日常使用请看 → [docs/使用说明.md](docs/使用说明.md)**（写作、导入 Markdown、评论配置、部署与常见问题）
+>
+> 本站地址：https://riverwind1024.github.io/
+
 # 🍥Fuwari  
 ![Node.js >= 20](https://img.shields.io/badge/node.js-%3E%3D20-brightgreen) 
 ![pnpm >= 9](https://img.shields.io/badge/pnpm-%3E%3D9-blue) 
